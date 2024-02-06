@@ -74,7 +74,7 @@ export default {
             this.course.whats_included = response.data.whats_included;
 
             this.course.included = '<ul>';
-            for(let i = 0; i < response.data.content.length; i++) {
+            for(let i = 0; i < response.data.included.length; i++) {
               this.course.included += '<li>' + response.data.included[i].title + '</li>';
             }
             this.course.included += '</ul>';
@@ -89,13 +89,13 @@ export default {
 
             this.course.faq = '';
             for(let i = 0; i < response.data.faq.length; i++) {
-              this.course.content += '<p><strong>Q: ' + response.data.faq[i].q + '</strong></p>';
-              this.course.content += '<p>A: ' + response.data.faq[i].a + '</p>';
+              this.course.faq += '<p><strong>Q: ' + response.data.faq[i].q + '</strong></p>';
+              this.course.faq += '<p>A: ' + response.data.faq[i].a + '</p>';
             }
 
-            this.course.task = '<h2>' + response.data.task.title + '</h2>';
-            this.course.task = '<p>' + response.data.task.instructions + '</p>';
-            this.course.task = '<p>' + response.data.task.learned + '</p>';
+            this.course.task = '<h2>' + response.data.task[0].title + '</h2>';
+            this.course.task = '<p>' + response.data.task[0].instructions + '</p>';
+            this.course.task = '<p>' + response.data.task[0].learned + '</p>';
             // End of Mappings
 
             this.stage = 3; // Move to Stage 2
