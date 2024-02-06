@@ -145,37 +145,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
-// Initialize API key and ChatGPT object
-$apiKey = 'secret';
-$chatGPT = new ChatGPT($apiKey);
-
 // Retrieve prompt from input
 $prompt = json_decode(file_get_contents("php://input"),true)['prompt'];
 
+if(empty($prompt)) {
+    echo 'No prompt';
+} else {
+// Initialize API key and ChatGPT object
+    $apiKey = 'secret';
+    $chatGPT = new ChatGPT($apiKey);
+
 // Define the message template for generating a course response
-$message = 'I need a written course on "{$prompt}". Do not include things like: videos, certificats, downloadable content. Answer needs to have those sections in JSON format where string in " is an JSON atribute: "course_name" - needs to be inviting and with a goal in mind, "keywords" - 10 good Google SEO keywords, "abstract" - maximum of 300 characters, "whats_included" - text about what is included in a course, "included" - 10 main titles from the course (output it like this {{"title"},{"title"}}), "prerequisites" - required skills and experiences, "syllabus" - what will students be able to do after a course, "readings" - additional 5 materials (format it like {"title","author"}), "faq" - 10 questions and answers on faq about the course (format it like {"q","a"}), "task" - practical task that reader can do based on an course (format it like {"title","instructions","learned"}). Answer with nothing but JSON.';
+    $message = 'I need a written course on "{$prompt}". Do not include things like: videos, certificats, downloadable content. Answer needs to have those sections in JSON format where string in " is an JSON atribute: "course_name" - needs to be inviting and with a goal in mind, "keywords" - 10 good Google SEO keywords, "abstract" - maximum of 300 characters, "whats_included" - text about what is included in a course, "included" - 10 main titles from the course (output it like this {{"title"},{"title"}}), "prerequisites" - required skills and experiences, "syllabus" - what will students be able to do after a course, "readings" - additional 5 materials (format it like {"title","author"}), "faq" - 10 questions and answers on faq about the course (format it like {"q","a"}), "task" - practical task that reader can do based on an course (format it like {"title","instructions","learned"}). Answer with nothing but JSON.';
 
 // Generate response from ChatGPT based on the message template
-$response = $chatGPT->generateResponse(str_replace('{$prompt}', $prompt, $message));
+    $response = $chatGPT->generateResponse(str_replace('{$prompt}', $prompt, $message));
 
 // Check if the response includes course details
-if(empty($response['included'])) {
-    // Send error response if course details are not found
-    $this->sendError(500, 'API Problems');
-} else {
-    // Generate content for each included title
-    foreach ($response['included'] as $i => $c) {
-        // Define the content prompt for each title
-        $content_prompt = 'Answer with a text about "{prompt}" based on this title (format answer in JSON like this {"title","content", "quiz":[{"question", "answer", "learned"}], "keywords" - Best Google SEO keywords based on a content formated in 1 string, "suggested_lesson_type" - this can be video or article or task}): ' . json_encode($c) . ' . Quiz should be based on content. In quiz section there should be 5 questions, answers and lessions learned.';
+    if (empty($response['included'])) {
+        // Send error response if course details are not found
+        $this->sendError(500, 'API Problems');
+    } else {
+        // Generate content for each included title
+        foreach ($response['included'] as $i => $c) {
+            // Define the content prompt for each title
+            $content_prompt = 'Answer with a text about "{prompt}" based on this title (format answer in JSON like this {"title","content", "quiz":[{"question", "answer", "learned"}], "keywords" - Best Google SEO keywords based on a content formated in 1 string, "suggested_lesson_type" - this can be video or article or task}): ' . json_encode($c) . ' . Quiz should be based on content. In quiz section there should be 5 questions, answers and lessions learned.';
 
-        // Generate response for content prompt
-        $response['content'][$i] = $chatGPT->generateResponse(str_replace('{$prompt}', $prompt, $content_prompt));
+            // Generate response for content prompt
+            $response['content'][$i] = $chatGPT->generateResponse(str_replace('{$prompt}', $prompt, $content_prompt));
+        }
+
+
+        // Set header for JSON response
+        header('Content-Type: application/json');
+
+        // Output the JSON response
+        echo json_encode($response);
     }
-
-
-    // Set header for JSON response
-    header('Content-Type: application/json');
-
-    // Output the JSON response
-    echo json_encode($response);
 }
