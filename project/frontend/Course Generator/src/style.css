@@ -1,0 +1,96 @@
+body {
+  margin: 0;
+  background-color: #f9f9f9;
+  font: 12px Arial, serif;
+  line-height: 17px;
+}
+body #app {
+  padding: 0 15px 50px;
+}
+body #app #error,
+body #app #stage1,
+body #app #stage2,
+body #app #stage3 {
+  max-width: 700px;
+  width: 100%;
+  margin: 30px auto;
+  border: 1px solid #dedede;
+  border-top: 4px solid #0ec8f7;
+  padding: 10px 15px;
+  background-color: #fff;
+}
+body #app #error h1,
+body #app #stage1 h1,
+body #app #stage2 h1,
+body #app #stage3 h1 {
+  font-size: 14px;
+  margin: 0 0 20px;
+  padding: 0;
+}
+body #app #error label,
+body #app #stage1 label,
+body #app #stage2 label,
+body #app #stage3 label {
+  font-weight: 600;
+  display: block;
+  width: calc(100% - 30px);
+  margin-bottom: 5px;
+}
+body #app #error input, body #app #error textarea,
+body #app #stage1 input,
+body #app #stage1 textarea,
+body #app #stage2 input,
+body #app #stage2 textarea,
+body #app #stage3 input,
+body #app #stage3 textarea {
+  display: block;
+  width: calc(100% - 30px);
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px 15px;
+}
+body #app #error textarea,
+body #app #stage1 textarea,
+body #app #stage2 textarea,
+body #app #stage3 textarea {
+  min-height: 200px;
+}
+body #app #error img,
+body #app #stage1 img,
+body #app #stage2 img,
+body #app #stage3 img {
+  display: block;
+  margin: 20px auto 30px;
+}
+body #app #error button,
+body #app #stage1 button,
+body #app #stage2 button,
+body #app #stage3 button {
+  border-radius: 5px;
+  border: 1px solid #016932;
+  background-color: #00a850;
+  color: #fff;
+  padding: 10px 15px;
+}
+body #app #error button:disabled,
+body #app #stage1 button:disabled,
+body #app #stage2 button:disabled,
+body #app #stage3 button:disabled {
+  border: 1px solid #9ba29e;
+  background-color: #a6b0ab;
+}
+body #app #stage1 {
+  text-align: right;
+}
+body #app #error,
+body #app #stage2 {
+  text-align: center;
+  padding: 30px 15px 40px;
+}
+body #app #error img,
+body #app #stage2 img {
+  max-width: 200px;
+}
+
+/*# sourceMappingURL=style.css.map */

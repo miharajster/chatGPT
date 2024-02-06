@@ -1,0 +1,70 @@
+body {
+  margin: 0;
+  background-color: #f9f9f9;
+  font: 12px Arial, serif;
+  line-height: 17px;
+  #app {
+    padding: 0 15px 50px;
+    #error,
+    #stage1,
+    #stage2,
+    #stage3 {
+      max-width: 700px;
+      width: 100%;
+      margin: 30px auto;
+      border: 1px solid #dedede;
+      border-top: 4px solid #0ec8f7;
+      padding: 10px 15px;
+      background-color: #fff;
+      h1 {
+        font-size: 14px;
+        margin: 0 0 20px;
+        padding: 0;
+      }
+      label {
+        font-weight: 600;
+        display: block;
+        width: calc(100% - 30px);
+        margin-bottom: 5px;
+      }
+      input, textarea {
+        display: block;
+        width: calc(100% - 30px);
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px 15px;
+      }
+      textarea {
+        min-height: 200px;
+      }
+      img {
+        display: block;
+        margin: 20px auto 30px;
+      }
+      button {
+        border-radius: 5px;
+        border: 1px solid #016932;
+        background-color: #00a850;
+        color: #fff;
+        padding: 10px 15px;
+        &:disabled {
+          border: 1px solid #9ba29e;
+          background-color: #a6b0ab;
+        }
+      }
+    }
+    #stage1 {
+      text-align: right;
+    }
+    #error,
+    #stage2 {
+      text-align: center;
+      padding: 30px 15px 40px;
+      img {
+        max-width: 200px;
+      }
+    }
+    #stage3 {}
+  }
+}
