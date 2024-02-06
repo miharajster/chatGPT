@@ -42,7 +42,7 @@ export default {
 
       // Trigger API POST call using Axios to the backend
       axios.post(
-          '//localhost/chatGPT/api.php',
+          'http://localhost/chatGPT/api.php',
           { prompt: inputContent },
           { timeout: 1800000 })
           .then(response => {
@@ -66,6 +66,9 @@ export default {
                 this.course.content += '<p>A: ' + response.data.content[i].quiz[o].answer + '</p>';
                 this.course.content += '<p>L: ' + response.data.content[i].quiz[o].learned + '</p>';
               }
+              this.course.content += '<h3>Keywords</h3>';
+              this.course.content += '<p>' + response.data.content[i].keywords + "</p>";
+              this.course.content += '<h3>Suggested lession type: ' + response.data.content[i].suggested_lesson_type + "</h3>";
             }
 
             this.course.whats_included = response.data.whats_included;

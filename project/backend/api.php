@@ -125,8 +125,28 @@ class ChatGPT {
         return $decodedResponse;
     }
 }
+// Allow CORS if applicable
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    // Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
+    // you want to allow, and if so:
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Max-Age: 1000');
+}
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
+        // may also be using PUT, PATCH, HEAD etc
+        header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
+    }
+
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) {
+        header("Access-Control-Allow-Headers: Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization");
+    }
+    exit(0);
+}
+
 // Initialize API key and ChatGPT object
-$apiKey = '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';
+$apiKey = 'secret';
 $chatGPT = new ChatGPT($apiKey);
 
 // Retrieve prompt from input
@@ -146,31 +166,12 @@ if(empty($response['included'])) {
     // Generate content for each included title
     foreach ($response['included'] as $i => $c) {
         // Define the content prompt for each title
-        $content_prompt = 'Answer with a text about "{prompt}" based on this title (format answer in JSON like this {"title","content", "quiz":[{"question", "answer", "learned"}]}): ' . json_encode($c) . ' . Quiz should be based on content. In quiz section there should be 5 questions, answers and lessions learned.';
+        $content_prompt = 'Answer with a text about "{prompt}" based on this title (format answer in JSON like this {"title","content", "quiz":[{"question", "answer", "learned"}], "keywords" - Best Google SEO keywords based on a content formated in 1 string, "suggested_lesson_type" - this can be video or article or task}): ' . json_encode($c) . ' . Quiz should be based on content. In quiz section there should be 5 questions, answers and lessions learned.';
 
         // Generate response for content prompt
         $response['content'][$i] = $chatGPT->generateResponse(str_replace('{$prompt}', $prompt, $content_prompt));
     }
 
-    // Allow CORS if applicable
-    if (isset($_SERVER['HTTP_ORIGIN'])) {
-        // Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
-        // you want to allow, and if so:
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Credentials: true');
-        header('Access-Control-Max-Age: 1000');
-    }
-    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
-            // may also be using PUT, PATCH, HEAD etc
-            header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
-        }
-
-        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) {
-            header("Access-Control-Allow-Headers: Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization");
-        }
-        exit(0);
-    }
 
     // Set header for JSON response
     header('Content-Type: application/json');
